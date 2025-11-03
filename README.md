@@ -97,13 +97,13 @@ LOCAL_STORAGE=.
 2. From the repository root, bring the stack up:
 
    ```sh
-   docker compose -f docker/docker-compose.yaml up -d
+   docker compose -f docker/docker-compose-local.yaml up -d
    ```
 
 3. Confirm the `wren-ui` service is running and pointing to your local image:
 
    ```sh
-   docker compose -f docker/docker-compose.yaml ps
+   docker compose -f docker/docker-compose-local.yaml ps
    ```
 
 
