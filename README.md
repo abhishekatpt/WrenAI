@@ -1,145 +1,133 @@
+# Deploy WREN AI with a custom WrenUI image
 
-<p align="center" id="top">
-  <a href="https://getwren.ai/?utm_source=github&utm_medium=title&utm_campaign=readme">
-    <picture>
-      <source media="(prefers-color-scheme: light)" srcset="./misc/wrenai_logo.png">
-      <img src="./misc/wrenai_logo_white.png" width="300px">
-    </picture>
-    <h1 align="center">Wren AI - Open-Source GenBI Agent</h1>
-  </a>
-</p>
+This is a short guide to deploy WREN AI and replace the default WrenUI with a locally-built image.
 
-<p align="center">
-  <a aria-label="Follow us on X" href="https://x.com/getwrenai">
-    <img alt="" src="https://img.shields.io/badge/-@getwrenai-blue?style=for-the-badge&logo=x&logoColor=white&labelColor=gray&logoWidth=20">
-  </a>
-  <a aria-label="Releases" href="https://github.com/canner/WrenAI/releases">
-    <img alt="" src="https://img.shields.io/github/v/release/canner/WrenAI?logo=github&label=GitHub%20Release&color=blue&style=for-the-badge">
-  </a>
-  <a aria-label="License" href="https://github.com/Canner/WrenAI/blob/main/LICENSE">
-    <img alt="" src="https://img.shields.io/github/license/canner/WrenAI?color=blue&style=for-the-badge">
-  </a>
-  <a href="https://docs.getwren.ai">
-    <img src="https://img.shields.io/badge/docs-online-brightgreen?style=for-the-badge" alt="Docs">
-  </a>
-  <a aria-label="Join the community on GitHub" href="https://discord.gg/5DvshJqG8Z">
-    <img alt="" src="https://img.shields.io/badge/-JOIN%20THE%20COMMUNITY-blue?style=for-the-badge&logo=discord&logoColor=white&labelColor=grey&logoWidth=20">
-  </a>
-  <a aria-label="Canner" href="https://cannerdata.com/?utm_source=github&utm_medium=badge&utm_campaign=readme">
-    <img src="https://img.shields.io/badge/%F0%9F%A7%A1-Made%20by%20Canner-blue?style=for-the-badge">
-  </a>
-</p>
+## Quick flow
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/9263" target="_blank"><img src="https://trendshift.io/api/badge/repositories/9263" alt="Canner%2FWrenAI | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-</p>
+1. Download and run the launcher (macOS darwin-arm64 example):
 
-> ⚡ GenBI (Generative BI) queries any database in natural language, generates accurate SQL (Text-to-SQL), charts (Text-to-Chart), and AI-powered business intelligence in seconds. ️
+   ```sh
+   curl -L https://github.com/Canner/WrenAI/releases/latest/download/wren-launcher-darwin-arm64.tar.gz | tar -xz && ./wren-launcher-darwin-arm64
+   ```
 
-<p align="center">
-  <img width="1920" height="1080" alt="1" src="https://github.com/user-attachments/assets/bba9d37a-33e3-49ab-b7cb-32fd6dddc8d1" />
-</p>
- 
-## 😍 Demos
+2. Enter your OpenAI credentials when prompted and select the LLM model.
 
-https://github.com/user-attachments/assets/f9c1cb34-5a95-4580-8890-ec9644da4160
+   The launcher will start the default Docker instances for the WREN stack.
 
-[Watch GenBI Demo](https://github.com/user-attachments/assets/90ad1d35-bb1e-490b-9676-b29863ff090b)
-
-## 🤖 Features
-
-|                    | What you get | Why it matters |
-|--------------------|--------------|----------------|
-| **Talk to Your Data** | Ask in any language → precise SQL & answers | Slash the SQL learning curve﻿ |
-| **GenBI Insights** | AI-written summaries, charts & reports | Decision-ready context in one click﻿ |
-| **Semantic Layer** | MDL models encode schema, metrics, joins | Keeps LLM outputs accurate & governed﻿ |
-| **Embed via API**  | Generate queries & charts inside your apps ([API Docs](https://wrenai.readme.io/reference/cloud-getting-started)) | Build custom agents, SaaS features, chatbots﻿ ([Streamlit Live Demo](https://huggingface.co/spaces/getWrenAI/wrenai-cloud-api-demo)) |
-
-🤩 [Learn more about GenBI](https://getwren.ai/genbi?utm_source=github&utm_medium=content&utm_campaign=readme)
-
-## 🚀 Getting Started
-
-Using Wren AI is super simple, you can set it up within 3 minutes, and start to interact with your data!
-
-<p align="center">
-  <img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/6555f539-9ef2-485d-9135-0071741fda96" />
-</p>
-
-- Visit our [Install in your local environment](http://docs.getwren.ai/oss/installation?utm_source=github&utm_medium=content&utm_campaign=readme).
-- Visit the [Usage Guides](https://docs.getwren.ai/oss/guide/connect/overview?utm_source=github&utm_medium=content&utm_campaign=readme) to learn more about how to use Wren AI.
-- Or just start with [Wren AI Cloud](https://getwren.ai/?utm_source=github&utm_medium=content&utm_campaign=readme) our Managed Cloud Service. ([OSS vs. Commercial Plans](https://docs.getwren.ai/oss/overview/cloud_vs_self_host)).
-
-## 🏗️ Architecture
-
-<p align="center">
-  <img width="1011" height="682" alt="wrenai-architecture" src="https://github.com/user-attachments/assets/e99b999f-9912-4fa7-921a-9c86b6b83354" />
-</p>
-
-👉 [Learn more about our Design](https://getwren.ai/post/how-we-design-our-semantic-engine-for-llms-the-backbone-of-the-semantic-layer-for-llm-architecture?utm_source=github&utm_medium=content&utm_campaign=readme)
+3. Stop and delete the WRENUI instance so you can replace it with your local image.
 
 
+## Build a local `wren_ui` image
 
-## 🔌 Data Sources
+- Use Node.js 18 for building the UI.
+- Copy/create a `.env` file inside `wren-ui/` with the following minimal example:
 
-If your data source is not listed here, vote for it in our [GitHub discussion thread](https://github.com/Canner/WrenAI/discussions/327). It will be a valuable input for us to decide on the next supported data sources.
-- Athena (Trino)
-- Redshift
-- BigQuery
-- DuckDB
-- PostgreSQL
-- MySQL
-- Microsoft SQL Server
-- ClickHouse
-- Oracle
-- Trino
-- Snowflake
+  ```properties
+  DB_TYPE=sqlite
+  SQLITE_FILE=testdb.sqlite3
+  OTHER_SERVICE_USING_DOCKER=true
+  ```
 
-## 🤖 LLM Models
+- From the repository root, build the Docker image (no cache):
 
-Wren AI supports integration with various Large Language Models (LLMs), including but not limited to:
-- OpenAI Models
-- Azure OpenAI Models
-- DeepSeek Models
-- Google AI Studio – Gemini Models
-- Vertex AI Models (Gemini + Anthropic)
-- Bedrock Models
-- Anthropic API Models
-- Groq Models
-- Ollama Models
-- Databricks Models
+   ```sh
+   docker build -t wrenui_local -f wren-ui/Dockerfile wren-ui --no-cache
+   ```
 
-Check [configuration examples here](https://github.com/Canner/WrenAI/tree/main/wren-ai-service/docs/config_examples)!
 
-> [!CAUTION]
-> The performance of Wren AI depends significantly on the capabilities of the LLM you choose. We strongly recommend using the most powerful model available for optimal results. Using less capable models may lead to reduced performance, slower response times, or inaccurate outputs.
+## Prepare the docker environment file
 
-## 📚 Documentation
 
-Visit [Wren AI documentation](https://docs.getwren.ai/oss/overview/introduction?utm_source=github&utm_medium=content&utm_campaign=readme) to view the full documentation.
+Create or edit `docker/.env` with the values below (this example file is used by the compose stacks):
 
-## 📪 Keep Posted?
+```env
+COMPOSE_PROJECT_NAME=wrenai
+PLATFORM=linux/amd64
 
-[Subscribe our blog](https://www.getwren.ai/blog/?utm_source=github&utm_medium=content&utm_campaign=readme) and [Follow our LinkedIn](https://www.linkedin.com/company/wrenai)
+PROJECT_DIR=.
 
-## 🛠️ Contribution
+# service port
+WREN_ENGINE_PORT=8080
+WREN_ENGINE_SQL_PORT=7432
+WREN_AI_SERVICE_PORT=5555
+WREN_UI_PORT=3000
+IBIS_SERVER_PORT=8000
 
-1.	Star ⭐ the repo to show support (it really helps).
-2.	Open an issue for bugs, ideas, or discussions.
-3.	Read [Contribution Guidelines](https://github.com/Canner/WrenAI/blob/main/CONTRIBUTING.md) for setup & PR guidelines.
+# ai service settings
+QDRANT_HOST=qdrant
 
-## ⭐️ Community
+# vendor keys
+OPENAI_API_KEY=<YOUR_OPENAI_KEY>
 
-- Join 1.3k+ developers in our [Discord](https://discord.gg/5DvshJqG8Z) for real-time help and roadmap previews.
-- If there are any issues, please visit [GitHub Issues](https://github.com/Canner/WrenAI/issues).
-- Explore our [public roadmap](https://wrenai.notion.site/) to stay updated on upcoming features and improvements!
+# version (change these to the latest if needed)
+WREN_PRODUCT_VERSION=0.28.0
+WREN_ENGINE_VERSION=0.20.2
+WREN_AI_SERVICE_VERSION=0.27.14
+IBIS_SERVER_VERSION=0.20.2
+WREN_UI_VERSION=0.31.2
+WREN_BOOTSTRAP_VERSION=0.1.5
 
-Please note that our [Code of Conduct](./CODE_OF_CONDUCT.md) applies to all Wren AI community channels. Users are **highly encouraged** to read and adhere to them to avoid repercussions.
+# user id (uuid v4)
+USER_UUID=
 
-## 🎉 Our Contributors
-<a href="https://github.com/canner/wrenAI/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Canner/WrenAI" />
-</a>
+# for other services
+POSTHOG_API_KEY=
+POSTHOG_HOST=https://app.posthog.com
+TELEMETRY_ENABLED=true
 
-<p align="right">
-  <a href="#top">⬆️ Back to Top</a>
-</p>
+GENERATION_MODEL=gpt-4o-mini
+LANGFUSE_SECRET_KEY=
+LANGFUSE_PUBLIC_KEY=
+
+# the port exposed to the host
+HOST_PORT=3000
+AI_SERVICE_FORWARD_PORT=5555
+
+# Wren UI
+EXPERIMENTAL_ENGINE_RUST_VERSION=false
+
+# Wren Engine
+LOCAL_STORAGE=.
+```
+
+## Start the stack with the local UI image
+
+1. If you rebuilt `wrenui_local`, update any compose files or service definitions to use `wrenui_local` as the image (or use an override compose file).
+
+2. From the repository root, bring the stack up:
+
+   ```sh
+   docker compose -f docker/docker-compose.yaml up -d
+   ```
+
+3. Confirm the `wren-ui` service is running and pointing to your local image:
+
+   ```sh
+   docker compose -f docker/docker-compose.yaml ps
+   ```
+
+
+## Notes & tips
+
+- If the compose file references an official image tag, you can either edit the `docker-compose.yaml` to use `wrenui_local` or build and tag your image with the same name used by compose.
+- For macOS Apple Silicon, the compose `PLATFORM=linux/amd64` is often required if the images are amd64-only.
+- Keep secrets (API keys) out of repo files and use environment variables or a secrets manager when possible.
+
+
+## Example: Replace image with an override (optional)
+
+Create `docker/docker-compose.override.yaml` with content similar to:
+
+```yaml
+services:
+  wren-ui:
+    image: wrenui_local:latest
+    build: ./wren-ui
+```
+
+Then run the same `docker compose` up command; Docker Compose will prefer the override settings.
+
+
+---
+
+If you want, I can also update the existing `docker/README.md` or the `docker-compose.yaml` to use `wrenui_local` automatically. Tell me which file you want edited next.

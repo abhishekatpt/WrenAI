@@ -41,6 +41,9 @@ export default async function handler(
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  console.log(`Streamin`);
   res.flushHeaders();
 
   const { responseId } = req.query;

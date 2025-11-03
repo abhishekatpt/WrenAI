@@ -19,7 +19,9 @@ const serverConfig = getConfig();
 const logger = getLogger('APOLLO');
 logger.level = 'debug';
 
-const cors = microCors();
+const cors = microCors({
+  origin: '*',
+});
 
 export const config: PageConfig = {
   api: {
